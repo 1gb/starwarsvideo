@@ -1,3 +1,4 @@
+var nextVideo;
 var videos = [
   {
     id: '_lKQtSJ1zvQ',
@@ -68,11 +69,6 @@ var videos = [
     id: '0pqcE99ViUU',
     start: 8,
     end: 14
-  },
-  {
-    id: 'w47vyyILLKE',
-    start: 0,
-    end: 9
   },
   {
     id: 'bCJDPd15n0A',
@@ -460,11 +456,6 @@ var videos = [
     end: undefined
   },
   {
-    id: 'eeuSpkOyy68',
-    start: 5,
-    end: 23
-  },
-  {
     id: '1X8k1aT4Cnk',
     start: 0,
     end: 18
@@ -491,12 +482,28 @@ var videos = [
   }
 ];
 
-
 // var thumbnailUrl = 'https://i.ytimg.com/vi/' + id + '/mqdefault.jpg';
 // var example embed = 'https://www.youtube.com/embed/8j3LMfQ5CRA?start=178&end=188';
 
 $( document ).ready(function() {
 
+  var player;
+  window.onYouTubeIframeAPIReady = function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+    console.log(player);
+  };
+  
+  // Randomize the videos
+  videos.sort(function(a, b) {
+    return 0.5 - Math.random();
+  });
+  
+  
   videos.forEach(function(object) {
     object.thumbnailUrl = 'https://i.ytimg.com/vi/' + object.id + '/mqdefault.jpg';
     object.videoUrl = 'https://www.youtube.com/embed/' + object.id + '?rel=0&amp;controls=0&amp;autoplay=1&amp;showinfo=0';
@@ -508,23 +515,94 @@ $( document ).ready(function() {
     }
   });
 
+  var tag = document.createElement('script');
+  tag.id = 'iframe-demo';
+  tag.src = 'https://www.youtube.com/iframe_api';
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+
+  function onPlayerReady(event) {
+    document.getElementById('player').style.borderColor = '#FF6D00';
+    
+    // Cue the first video;
+    player.cueVideoById({'videoId': videos[0].id,
+           'startSeconds': videos[0].start,
+           'endSeconds': videos[0].end
+         });
+    $('#' + videos[0].id).addClass('glow');
+    console.log('!!!', nextVideo);
+    nextVideo = videos[1].id;
+    console.log(nextVideo);
+  }
+  
+  function changeBorderColor(playerStatus) {
+    var color;
+    if (playerStatus == -1) {
+      color = "#37474F"; // unstarted = gray
+    } else if (playerStatus == 0) {
+      color = "#FFFF00"; // ended = yellow
+    } else if (playerStatus == 1) {
+      color = "#33691E"; // playing = green
+    } else if (playerStatus == 2) {
+      color = "#DD2C00"; // paused = red
+    } else if (playerStatus == 3) {
+      color = "#AA00FF"; // buffering = purple
+    } else if (playerStatus == 5) {
+      color = "#FF6DOO"; // video cued = orange
+    }
+    if (color) {
+      document.getElementById('player').style.borderColor = color;
+    }
+  }
+  
+  function onPlayerStateChange(event) {
+    changeBorderColor(event.data);
+    
+    if (event.data === 0) {
+      console.log('stopped');
+      playCurrentVideo(nextVideo);
+    }
+  }
+  
+  // ----------
+  function playCurrentVideo(id) {
+    for (i = 0; i < videos.length; i++) {
+      if (videos[i].id === id) {
+        console.log('now playing', i);
+        var start = videos[i].start;
+        var end = videos[i].end;
+        player.loadVideoById({'videoId': id,
+               'startSeconds': start,
+               'endSeconds': end
+             });
+             
+             // Mysterious stopping?
+             
+        $('.thumbnail').removeClass('glow');
+        $('#' + id).addClass('glow');
+        console.log('current video', i);
+        nextVideo = videos[i + 1].id;
+        console.log('nextVideo', (i + 1));
+      }
+    }    
+  }
+  
+  // Make thumbnails
   videos.forEach(function(object) {
     $('.wrapper').append('<div class="thumbnail" id="' + object.id + '"><img src="' + object.thumbnailUrl + '"</div>');
   });
-
-  var mainPlayer = '<iframe width="560" height="315" src="' + videos[0].videoUrl + '" frameborder="0" allowfullscreen></iframe>';
-
-  $('#player').html(mainPlayer);
-  
+      
   $('.thumbnail').on('click', function() {
-    var video;
-    var id = this.id;
-    for (i = 0; i < videos.length; i++) {
-      if (videos[i].id === id) {
-        video = videos[i];
-      }
-    }
-    
-    $('#player').empty().html('<iframe width="560" height="315" src="' + video.videoUrl + '" frameborder="0" allowfullscreen></iframe>');
+    playCurrentVideo(this.id);
+    $('.thumbnail').removeClass('glow');
+    $(this).addClass('glow');
   });
-});
+  
+}); //End ready
+
+// To do:
+// - change origin
+// - style better
+// - add other videos
+// - debug mysterious stopping/skipping
