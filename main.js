@@ -291,11 +291,6 @@ var videos = [
     end: 46
   },
   {
-    id: 'jhjVl70Z_Qc',
-    start: 21,
-    end: 34
-  },
-  {
     id: 'QAvgh9I1rvk',
     start: 26,
     end: 50
@@ -443,7 +438,7 @@ var videos = [
   {
     id: '6pEdiM1F8_8',
     start: 11,
-    end: 28
+    end: 17
   },
   {
     id: 'HaWuCjLqtFA',
@@ -462,13 +457,13 @@ var videos = [
   },
   {
     id: 'riEtKGX1D-U',
-    start: 30,
+    start: 29,
     end: 53
   },
   {
     id: 'VZvHIeMZG_g',
-    start: 0,
-    end: 20
+    start: 3,
+    end: 19
   },
   {
     id: 'BnbNXlpWdh8',
@@ -479,6 +474,151 @@ var videos = [
     id: 'O2ZPVUO1P9A',
     start: undefined,
     end: undefined
+  },
+  {
+    id: 'kT9m85xjCn4',
+    start: 0,
+    end: 34
+  },
+  {
+    id: 'LpS5qi198v0',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: '4dtwZoSIFzs',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: 'xll18oDkzhU',
+    start: 0,
+    end: 25
+  },
+  {
+    id: 'xDtkKESEwLA',
+    start: 0,
+    end: 15
+  },
+  {
+    id: '03RkfQtv5Ls',
+    start: 108,
+    end: 141
+  },
+  {
+    id: 'nETugM1lswc',
+    start: 2,
+    end: 21
+  },
+  {
+    id: 'dseVIM3bj4',
+    start: 0,
+    end: 21
+  },
+  {
+    id: 'xohCm3cBJA4',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: 'Chc5mSpNgBo',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: 'G5mR-y5vcQw',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: 'Zz6Fc_eetnE',
+    start: 0,
+    end: 11
+  },
+  {
+    id: 'B9rKE2QCu58',
+    start: 9,
+    end: 30
+  },
+  {
+    id: 'cuDggqgwg',
+    start: 2,
+    end: 20
+  },
+  {
+    id: 'kcI4r0DERMM',
+    start: 0,
+    end: 11
+  },
+  {
+    id: 'oc3UKwYaLNU',
+    start: 9,
+    end: 47
+  },
+  {
+    id: 'nfjLZE6Pp5U',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: 'J-nCdSqwJZE',
+    start: 0,
+    end: 21
+  },
+  {
+    id: '_OUJqXd5FrQ',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: 'Mqhw_GXgqYY',
+    start: 9,
+    end: 37
+  },
+  {
+    id: 'zznhFx8aKwo',
+    start: 0,
+    end: 19
+  },
+  {
+    id: 'z5J4O45YPlI',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: '-o2SoDmIlrI',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: '7Y2eRZ53feQ',
+    start: 15,
+    end: 39
+  },
+  {
+    id: 'BcgZGNu_vkY',
+    start: 95,
+    end: 121
+  },
+  {
+    id: 'HFq_2NeaQn0',
+    start: 144,
+    end: 167
+  },
+  {
+    id: 'sT_7sWApztY',
+    start: 29,
+    end: 53
+  },
+  {
+    id: 'u1UOAdFq5aY',
+    start: 30,
+    end: 55
+  },
+  {
+    id: '6cPrEwhESoA',
+    start: 94,
+    end: 118
   }
 ];
 
@@ -495,7 +635,6 @@ $( document ).ready(function() {
         'onStateChange': onPlayerStateChange
       }
     });
-    console.log(player);
   };
   
   // Randomize the videos
@@ -506,7 +645,7 @@ $( document ).ready(function() {
   
   videos.forEach(function(object) {
     object.thumbnailUrl = 'https://i.ytimg.com/vi/' + object.id + '/mqdefault.jpg';
-    object.videoUrl = 'https://www.youtube.com/embed/' + object.id + '?rel=0&amp;controls=0&amp;autoplay=1&amp;showinfo=0';
+    object.videoUrl = 'https://www.youtube.com/embed/' + object.id + '?enablejsapi=1&controls=0&showinfo=0&rel=0&modestbranding=1'; //?rel=0&amp;controls=0&amp;autoplay=1&amp;showinfo=0';  
     if (object.start !== undefined) {
       object.videoUrl += ('&amp;start=' + object.start);
     }
@@ -531,25 +670,23 @@ $( document ).ready(function() {
            'endSeconds': videos[0].end
          });
     $('#' + videos[0].id).addClass('glow');
-    console.log('!!!', nextVideo);
     nextVideo = videos[1].id;
-    console.log(nextVideo);
   }
   
   function changeBorderColor(playerStatus) {
     var color;
     if (playerStatus == -1) {
-      color = "#37474F"; // unstarted = gray
+      color = "#000"; // unstarted = black
     } else if (playerStatus == 0) {
-      color = "#FFFF00"; // ended = yellow
+      color = "#000"; // ended = yellow
     } else if (playerStatus == 1) {
-      color = "#33691E"; // playing = green
+      color = "#000"; // playing = green
     } else if (playerStatus == 2) {
       color = "#DD2C00"; // paused = red
     } else if (playerStatus == 3) {
-      color = "#AA00FF"; // buffering = purple
+      color = "#000"; // buffering = purple
     } else if (playerStatus == 5) {
-      color = "#FF6DOO"; // video cued = orange
+      color = "#000"; // video cued = orange
     }
     if (color) {
       document.getElementById('player').style.borderColor = color;
@@ -560,7 +697,6 @@ $( document ).ready(function() {
     changeBorderColor(event.data);
     
     if (event.data === 0) {
-      console.log('stopped');
       playCurrentVideo(nextVideo);
     }
   }
@@ -569,7 +705,6 @@ $( document ).ready(function() {
   function playCurrentVideo(id) {
     for (i = 0; i < videos.length; i++) {
       if (videos[i].id === id) {
-        console.log('now playing', i);
         var start = videos[i].start;
         var end = videos[i].end;
         player.loadVideoById({'videoId': id,
@@ -581,23 +716,21 @@ $( document ).ready(function() {
              
         $('.thumbnail').removeClass('glow');
         $('#' + id).addClass('glow');
-        console.log('current video', i);
         nextVideo = videos[i + 1].id;
-        console.log('nextVideo', (i + 1));
       }
     }    
   }
   
   // Make thumbnails
-  videos.forEach(function(object) {
-    $('.wrapper').append('<div class="thumbnail" id="' + object.id + '"><img src="' + object.thumbnailUrl + '"</div>');
-  });
-      
-  $('.thumbnail').on('click', function() {
-    playCurrentVideo(this.id);
-    $('.thumbnail').removeClass('glow');
-    $(this).addClass('glow');
-  });
+  // videos.forEach(function(object) {
+  //   $('.wrapper').append('<div class="thumbnail" id="' + object.id + '"><img src="' + object.thumbnailUrl + '"</div>');
+  // });
+  //     
+  // $('.thumbnail').on('click', function() {
+  //   playCurrentVideo(this.id);
+  //   $('.thumbnail').removeClass('glow');
+  //   $(this).addClass('glow');
+  // });
   
 }); //End ready
 
