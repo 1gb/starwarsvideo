@@ -4,32 +4,32 @@ html, body {
   padding: 0;
 }
 
-.xwing img {
+.xwing svg {
   z-index: 3;
-  min-height: 100%;
-  min-width: 1280px;
-	
-  /* Set up proportionate scaling */
+  /*min-height: 100%;*/
+  /*min-width: 1280px;*/
   width: 100%;
   height: auto;
-	
-  /* Set up positioning */
   position: fixed;
   top: 0;
   left: 0;
 }
 
-@media screen and (max-width: 1280px) { /* Specific to this particular image */
+.smallControls {
+  display: visible;
+}
+
+@media screen and (max-width: 1280px) {
   .xwing img {
     left: 50%;
-    margin-left: -640px;   /* 50% */
+    margin-left: -640px;
   }
 }
 
 body {
-  background-color: black;
+  background-color: #000;
 }
-
+/*
 .wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -42,9 +42,24 @@ body {
   position: absolute;
   opacity: 0.65;
   left: 50%;
-  top: 30px;
-  transform: translateX(-50%);
+  top: 100px;
   z-index: 5;
+}*/
+
+.container, .wrapper {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    width: 100%;
+    height: 100%;
+}
+
+.video, #player {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .thumbnail {
@@ -81,7 +96,7 @@ body {
   animation: glowing 1.75s infinite;
 }
 
-/*Stars, based on "Pure CSS starfield" by Keith Clark https://codepen.io/keithclark/pen/zqcEd*/
+/*Stars, from "Pure CSS starfield" by Keith Clark https://codepen.io/keithclark/pen/zqcEd*/
 
 #space, .stars {
   z-index: 1;
@@ -91,6 +106,10 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+#nextbtn {
+  cursor: pointer;
 }
 
 .stars {
@@ -128,11 +147,23 @@ body {
   animation-delay: 4s;
 }
 
+#ray1, #ray7, #ray10, #ray13 {
+  animation: pulse 8s infinite;
+}
+
+#ray2, #ray4, #ray6, #ray11, #ray12 {
+  animation: pulse2 8s infinite;
+}
+
+#ray3, #ray5, #ray8, #ray9 {
+  animation: pulse3 8s infinite;
+}
+
 
 @keyframes zoom {
   0% {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.3);
     animation-timing-function: ease-in;
   } 
   85% {
@@ -143,5 +174,101 @@ body {
   100% {
     opacity: 0;
     transform: scale(3.5);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.3;
+    animation-timing-function: ease-in;
+  } 
+  15% {
+    opacity: 0.25;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  32% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 0.3;
+  }
+  85% {
+    opacity: 0.25;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0.3;
+    animation-timing-function: linear;
+  }
+}
+
+@keyframes pulse2 {
+  0% {
+    opacity: 0.3;
+    animation-timing-function: ease-in;
+  } 
+  22% {
+    opacity: 0.25;
+  }
+  36% {
+    opacity: 0.3;
+  }
+  45% {
+    opacity: 0.25;
+  }
+  75% {
+    opacity: 0.3;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0.25;
+    animation-timing-function: linear;
+  }
+}
+
+@keyframes pulse3 {
+  0% {
+    opacity: 0.2;
+    animation-timing-function: ease-in;
+  } 
+  10% {
+    opacity: 0.3;
+  }
+  19% {
+    opacity: 0.25;
+  }
+  30% {
+    opacity: 0.3;
+  }
+  56% {
+    opacity: 0.25;
+  }
+  75% {
+    opacity: 0.3;
+    animation-timing-function: ease-out;
+  }
+  87% {
+    opacity: 0.25;
+    animation-timing-function: ease-out;
+  }
+  93% {
+    opacity: 0.3;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0.2;
+    animation-timing-function: linear;
+  }
+}
+
+@media (max-width: 1385px) {
+  .xwing {
+    display: none;
+  }
+  
+  .smallControls {
+    display: visible;
   }
 }
