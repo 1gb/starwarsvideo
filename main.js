@@ -786,12 +786,13 @@ $( document ).ready(function() {
 }); //End ready
 
 // To do:
+// - Remove changeborder stuff
 // - change origin... to github? to starwars.video? Maybe ask 
 // - add meta data descriptions
-// - style better... new ship! add ottom line to SVG
-// add holographic projection
-// add list of all videos ... modal? 
 // - clean up code... i-frame-demo?
 
 // timing wrong on star wars bottle flip, ends too late
-// first go at projector lights okay, next try chopping up a triangle
+// implement ? modal
+// split two SVGs up?
+// make youtube player smaller on smaller screens
+// see about controls = 0??

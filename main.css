@@ -1,5 +1,6 @@
 html, body {
-  height: 100%;
+  /*height: 100%;*/
+  /*width: 100%;*/
   margin: 0;
   padding: 0;
 }
@@ -29,13 +30,13 @@ html, body {
 body {
   background-color: #000;
 }
-/*
+
 .wrapper {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
 }
 
 #player {
@@ -44,7 +45,7 @@ body {
   left: 50%;
   top: 100px;
   z-index: 5;
-}*/
+}
 
 .container, .wrapper {
     position: relative;
@@ -99,17 +100,12 @@ body {
 /*Stars, from "Pure CSS starfield" by Keith Clark https://codepen.io/keithclark/pen/zqcEd*/
 
 #space, .stars {
-  z-index: 1;
-  overflow: hidden; 
+  overflow: hidden;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-}
-
-#nextbtn {
-  cursor: pointer;
 }
 
 .stars {
@@ -124,6 +120,10 @@ body {
   background-size: 200px 200px;
   animation: zoom 5s infinite;
   opacity: 0;
+}
+
+#nextbtn {
+  cursor: pointer;
 }
 
 .stars:nth-child(1) {
@@ -147,7 +147,7 @@ body {
   animation-delay: 4s;
 }
 
-#ray1, #ray7, #ray10, #ray13 {
+#ray1, #ray5, #ray7, #ray10, #ray13 {
   animation: pulse 8s infinite;
 }
 
@@ -155,7 +155,7 @@ body {
   animation: pulse2 8s infinite;
 }
 
-#ray3, #ray5, #ray8, #ray9 {
+#ray3, #ray8, #ray9 {
   animation: pulse3 8s infinite;
 }
 
@@ -218,7 +218,15 @@ body {
   45% {
     opacity: 0.25;
   }
-  75% {
+  80% {
+    opacity: 0.3;
+    animation-timing-function: ease-out;
+  }
+  85% {
+    opacity: 0.25;
+    animation-timing-function: ease-out;
+  }
+  95% {
     opacity: 0.3;
     animation-timing-function: ease-out;
   }
