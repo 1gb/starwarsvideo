@@ -71,11 +71,6 @@ var videos = [
     end: undefined
   },
   {
-    id: 'vv5MSkv_2aU',
-    start: undefined,
-    end: undefined
-  },
-  {
     id: 'kaipkcHAyz4',
     start: 17,
     end: 30
@@ -749,7 +744,6 @@ $( document ).ready(function() {
            'startSeconds': videos[0].start,
            'endSeconds': videos[0].end
          });
-    $('#' + videos[0].id).addClass('glow');
     nextVideo = videos[1].id;
     previousVideo = videos[0].id;
   }
@@ -760,7 +754,7 @@ $( document ).ready(function() {
     playCurrentVideo(nextVideo);
   }
   
-  function onPlayerStateChange(event) {    
+  function onPlayerStateChange(event) {
     if (event.data === 0) {
       playCurrentVideo(nextVideo);
     }
@@ -777,10 +771,9 @@ $( document ).ready(function() {
                'startSeconds': start,
                'endSeconds': end
              });
-        $('.thumbnail').removeClass('glow');
-        $('#' + id).addClass('glow');
         nextVideo = videos[i + 1].id;
         previousVideo = i - 1 < 0 ? videos[0].id : videos[i - 1].id;
+        return;
       }
     }
   }
