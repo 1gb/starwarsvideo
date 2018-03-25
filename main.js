@@ -755,27 +755,25 @@ $( document ).ready(function() {
   }
   
   function onPlayerStateChange(event) {
-    if (event.data === 0) {
+    if (event.data === YT.PlayerState.ENDED && player.getVideoLoadedFraction() > 0) {
       playCurrentVideo(nextVideo);
     }
   }
   
   // ----------
-  function playCurrentVideo(id) {   //this seems inefficient
-    for (i = 0; i < videos.length; i++) {
-      if (videos[i].id === id) {
-        console.log('now playing number: ', i, id);
-        var start = videos[i].start;
-        var end = videos[i].end;
-        player.loadVideoById({'videoId': id,
-               'startSeconds': start,
-               'endSeconds': end
-             });
-        nextVideo = videos[i + 1].id;
-        previousVideo = i - 1 < 0 ? videos[0].id : videos[i - 1].id;
-        return;
-      }
-    }
+  function playCurrentVideo(id) {
+    var currentVideo = videos.find(x => x.id === id);
+    var start = currentVideo.start;
+    var end = currentVideo.end;
+    var index = videos.indexOf(currentVideo);
+    player.loadVideoById({'videoId': id,
+           'startSeconds': start,
+           'endSeconds': end
+         });
+         // console.warn('now playing: 'currentVideo.id, start, end, index);
+         nextVideo = videos[index + 1].id;
+         previousVideo = index - 1 <= 0 ? videos[0].id : videos[index - 1].id;
+    return;
   }
   
   $('.play-next').on('click', function() {
