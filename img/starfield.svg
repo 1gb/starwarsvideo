@@ -1,0 +1,86 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="1.1"
+    width="1024"
+    height="728"
+    viewBox="0 0 1024 728"
+    preserveAspectRatio="none"
+    onload="init(evt)">
+
+   <script type="text/ecmascript">
+    <![CDATA[
+        var svgDocument;
+        var svgNS = "http://www.w3.org/2000/svg";
+        var xlinkNS = "http://www.w3.org/1999/xlink";
+        
+        var centerX;
+        var centerY;
+        var angles = [];
+        var distances = [];
+        var maxD = 1000;
+        var nStars = 150;
+        
+        function init(evt) {
+            if ( window.svgDocument == null ) {
+                svgDocument = evt.target.ownerDocument;
+            }
+            
+            centerX = 512;
+            centerY = 364;
+            // centerX = svgDocument.childNodes[0].getAttributeNS(null, 'width')/2;
+            // centerY = svgDocument.childNodes[0].getAttributeNS(null, 'height')/2;
+            maxD = Math.sqrt(centerX * centerX + centerY * centerY) + 40;
+
+            createStars(nStars);
+            beginAnimation();
+        }
+   
+        function createStars(n) {
+            for (var i=1; i<=n; i++) {
+                var star = document.createElementNS(svgNS, "use");
+                star.setAttributeNS(null, "id", "star" + i);	
+                star.setAttributeNS(xlinkNS, "href", "#star");			
+                document.getElementById("star-group").appendChild(star);
+                angles.push(Math.PI * 2 * Math.random());
+                distances.push(maxD * Math.random());
+            }
+        }
+   
+        function drawField() {
+            for (var i=0; i<nStars; i++) {
+                var star = svgDocument.getElementById('star' + (i+1));
+                var d = distances[i];
+                var x = centerX + d * Math.sin(angles[i]);
+                var y = centerY + d * Math.cos(angles[i]);
+                var scale = 2*(1 - (maxD / (d+maxD)));
+                
+                star.setAttributeNS(null, 'transform', 'translate(' + x + ',' + y + ') scale(' + scale*scale + ')');
+            }
+        }
+   
+        function updateImage() {
+            for (var i=0; i<nStars; i++) {
+                distances[i]++;
+                if (distances[i] > maxD) {
+                    distances[i] = 0;
+                }
+            }
+            drawField();
+        }
+   
+        function beginAnimation() {
+            var timeout = setInterval(updateImage, 10);
+        }
+        
+    ]]>
+   </script>
+    
+    <defs>
+        <path id="star" d="M10 6 h 6 v 6 h -6 Z" fill="#fff" />
+    </defs>
+    
+    <rect width="1024" height="728" fill="#000" />
+    <g id="star-group"></g>
+    
+</svg>

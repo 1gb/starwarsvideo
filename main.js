@@ -11,11 +11,6 @@ var videos = [
     end: 9
   },
   {
-    id: '8j3LMfQ5CRA',
-    start: 178,
-    end: 188
-  },
-  {
     id: 'Kwc5W0vUOiY',
     start: undefined,
     end: undefined
@@ -366,11 +361,6 @@ var videos = [
     end: undefined
   },
   {
-    id: 'xll18oDkzhU',
-    start: 0,
-    end: 25
-  },
-  {
     id: 'xDtkKESEwLA',
     start: 0,
     end: 15
@@ -399,11 +389,6 @@ var videos = [
     id: 'B9rKE2QCu58',
     start: 9,
     end: 30
-  },
-  {
-    id: 'cuDggqgwg',
-    start: 2,
-    end: 20
   },
   {
     id: 'kcI4r0DERMM',
@@ -636,14 +621,64 @@ var videos = [
     end: 29
   },
   {
-    id: 'KjbVM06OTQY',
-    start: undefined,
-    end: undefined
+    id: 'GbeCBpRdoEA',
+    start: 30,
+    end: 43
   },
   {
     id: 'UMKuFqB3RwA',
     start: 15,
     end: 26
+  },
+  {
+    id: '5Rnxxhd3SYI',
+    start: 29,
+    end: 39
+  },
+  {
+    id: 'D8bTnyrZAFc',
+    start: undefined,
+    end: undefined
+  },
+  {
+    id: 'DaD26oGKznQ',
+    start: 5,
+    end: 24
+  },
+  {
+    id: 'HRNEdZQXxIQ',
+    start: 7,
+    end: 16
+  },
+  {
+    id: 'ErgzZ-artTI',
+    start: 4,
+    end: 35
+  },
+  {
+    id: 'mBO8dB6QvO0',
+    start: 312,
+    end: 338
+  },
+  {
+    id: 'D_gEkdRQLjk',
+    start: 8,
+    end: 19
+  },
+  {
+    id: 'fiR_4KBFVZs',
+    start: 14,
+    end: 24
+  },
+  {
+    id: 'TQwV-NQtWII',
+    start: 8,
+    end: 20
+  },
+  {
+    id: 'HQN5dp22s9g',
+    start: 18,
+    end: 25
   },
   {
     id: '6cPrEwhESoA',
@@ -652,6 +687,7 @@ var videos = [
   }
 ];
 
+// console.warn(videos.length);
 // var thumbnailUrl = 'https://i.ytimg.com/vi/' + id + '/mqdefault.jpg';
 // var example embed = 'https://www.youtube.com/embed/8j3LMfQ5CRA?start=178&end=188';
 
@@ -683,10 +719,9 @@ $( document ).ready(function() {
   }).forEach(function (element, index, arr) {
       if (arr.indexOf(element) !== index) {
           areAnyDuplicates = true;
+          console.log('duplicate', element);
       }
   });
-  
-  // console.log(areAnyDuplicates);
   
   videos.forEach(function(object) {
     object.thumbnailUrl = 'https://i.ytimg.com/vi/' + object.id + '/mqdefault.jpg';
@@ -716,83 +751,69 @@ $( document ).ready(function() {
          });
     $('#' + videos[0].id).addClass('glow');
     nextVideo = videos[1].id;
+    previousVideo = videos[0].id;
   }
   
-  // On error (video deleted), play next
-  function onPlayerError() {
+  // On error (video deleted or unavailable), play next
+  function onPlayerError(event) {
+    console.log('error code:', event.data);
     playCurrentVideo(nextVideo);
   }
   
-  function changeBorderColor(playerStatus) {
-    var color;
-    if (playerStatus == -1) {
-      color = "#000"; // unstarted = black
-    } else if (playerStatus == 0) {
-      color = "#000"; // ended = yellow
-    } else if (playerStatus == 1) {
-      color = "#000"; // playing = green
-    } else if (playerStatus == 2) {
-      color = "#DD2C00"; // paused = red
-    } else if (playerStatus == 3) {
-      color = "#000"; // buffering = purple
-    } else if (playerStatus == 5) {
-      color = "#000"; // video cued = orange
-    }
-    if (color) {
-      document.getElementById('player').style.borderColor = color;
-    }
-  }
-  
-  function onPlayerStateChange(event) {
-    changeBorderColor(event.data);
-    
+  function onPlayerStateChange(event) {    
     if (event.data === 0) {
       playCurrentVideo(nextVideo);
     }
   }
   
   // ----------
-  function playCurrentVideo(id) {
+  function playCurrentVideo(id) {   //this seems inefficient
     for (i = 0; i < videos.length; i++) {
       if (videos[i].id === id) {
+        console.log('now playing number: ', i, id);
         var start = videos[i].start;
         var end = videos[i].end;
         player.loadVideoById({'videoId': id,
                'startSeconds': start,
                'endSeconds': end
-             });             
+             });
         $('.thumbnail').removeClass('glow');
         $('#' + id).addClass('glow');
         nextVideo = videos[i + 1].id;
+        previousVideo = i - 1 < 0 ? videos[0].id : videos[i - 1].id;
       }
-    }    
+    }
   }
   
-  $('#nextbtn').on('click', function() {
+  $('.play-next').on('click', function() {
     playCurrentVideo(nextVideo);
   });
+
+  $('.play-prev').on('click', function() {
+    playCurrentVideo(previousVideo);
+  });
   
-  // Make thumbnails
-  // videos.forEach(function(object) {
-  //   $('.wrapper').append('<div class="thumbnail" id="' + object.id + '"><img src="' + object.thumbnailUrl + '"</div>');
-  // });
-  //     
-  // $('.thumbnail').on('click', function() {
-  //   playCurrentVideo(this.id);
-  //   $('.thumbnail').removeClass('glow');
-  //   $(this).addClass('glow');
-  // });
-  
+  $('.about').click(function() {
+    $('#bottomModal').show();
+  });
+
+  $('.close').click(function() {
+    $('#bottomModal').fadeOut('0.4ms');
+  });
+
+  window.onclick = function(event) {
+      if (event.target == document.getElementById('bottomModal')) {
+          $('#bottomModal').fadeOut('0.4ms');
+      }
+  }
+
 }); //End ready
 
 // To do:
-// - Remove changeborder stuff
+// - uhm, put in something for when they reach the "last" video like a reset to 0
 // - change origin... to github? to starwars.video? Maybe ask 
-// - add meta data descriptions
-// - clean up code... i-frame-demo?
-
+// eventually use YT API, to better check for deleted videos
 // timing wrong on star wars bottle flip, ends too late
-// implement ? modal
-// split two SVGs up?
 // make youtube player smaller on smaller screens
 // see about controls = 0??
+// jabba the hut 3x (I wonder what I meant by this)
